@@ -245,7 +245,7 @@ void MyServer::readyRead() // обработчик входящих сообще
 //            arr.append(qstr);
 //            socket->write(arr);
 
-
+// )
 //      }
 //      test1 = "";
 //    }
