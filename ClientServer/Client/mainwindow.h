@@ -27,6 +27,8 @@
 #include "QStandardItem"
 #include <openssl/evp.h>
 #include <openssl/aes.h>
+#include <QSortFilterProxyModel>
+#include <QTextCodec>
 
 #define BUFSIZE 1024
 
@@ -44,7 +46,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    QStandardItemModel *model = new QStandardItemModel;
     QTcpSocket* socket;
     QByteArray Data;
     int size = 9;
@@ -90,20 +92,112 @@ public:
     }
     void encrypt()
     {
-        FILE *encode_file = fopen("./1.txt", "rb");
-        FILE *decode_file = fopen("./2.txt", "wb");
+        FILE *encode_file = fopen("./1", "rb");
+        FILE *decode_file = fopen("./2", "wb");
         do_crypt(encode_file, decode_file, 1); // 0 - decrypt, 1 - encrypt
         fclose(encode_file);
         fclose(decode_file);
 
     }
     void decrypt(){
-        FILE *encode_file = fopen("./2.txt", "rb");
-        FILE *decode_file = fopen("./1.txt", "wb");
+        FILE *encode_file = fopen("./2", "rb");
+        FILE *decode_file = fopen("./3", "wb");
         do_crypt(encode_file, decode_file, 0); // 0 - decrypt, 1 - encrypt
         fclose(encode_file);
         fclose(decode_file);
     }
+    string checkName(string name) //Используемые символы - только буквы; Если регистр не тот, меняем на правильный.
+    {
+        unsigned long long int size = name.size();
+        for(int i = 0; i < size; i++)
+        {
+            if((name[i] < 65) or ((name[i] > 90) and (name[i] < 97)) or (name[i] > 122))
+            {
+                return "false";
+            }
+        }
+
+        if((name[0] > 64 && name[0] < 91))
+        {
+            return name;
+        }
+
+        else if(name[0] > 96 && name[0] < 123)
+        {
+            name[0] = name[0] - 32;
+            return name;
+        }
+    }
+
+    string checkTel(string tel)
+    {
+        QString str = "\\b[0-9]{10}\\b";
+        QString Tel =  QString::fromUtf8(tel.c_str());
+        QRegExp rx(str);
+        if(rx.exactMatch(Tel))
+        {
+           return tel;
+        }
+        else {
+            return "false";
+        }
+    }
+    string checkYear(string year)
+    {
+        QString str = "\\b[0-9]{4}\\b";
+        QString Year =  QString::fromUtf8(year.c_str());
+        QRegExp rx(str);
+        if(rx.exactMatch(Year))
+        {
+           return year;
+        }
+        else {
+            return "false";
+        }
+    }
+    string checkId(string id)
+    {
+        QString str = "\\b[0-9]{1,}\\b";
+        QString Id =  QString::fromUtf8(id.c_str());
+        QRegExp rx(str);
+        if(rx.exactMatch(Id))
+        {
+           return id;
+        }
+        else {
+            return "false";
+        }
+    }
+    void SendCrypt(QString mes)
+    {
+
+        unsigned char *key = (unsigned char *) "0123456789abcdeF0123456789abcdeF";
+        unsigned char *iv = (unsigned char *) "1234567887654321";
+
+        unsigned char out_buf[256];
+        QByteArray text = mes.toLocal8Bit();
+        text.append("#");
+        EVP_CIPHER_CTX *ctx;
+        unsigned char *ert = reinterpret_cast<unsigned char *>(text.data());
+        int t = text.size();
+        int k = strlen((char*)ert);
+
+        ctx = EVP_CIPHER_CTX_new();
+        EVP_EncryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv);
+        int crypLen;
+        int len;
+        EVP_EncryptUpdate(ctx, out_buf,&len, ert, t);
+        crypLen = len;
+        EVP_EncryptFinal_ex(ctx, out_buf + len, &len);
+        crypLen += len;
+
+        text = QByteArray((char*)out_buf, crypLen);
+
+        qDebug() << "decrypted text:"<< text << endl;
+        socket->write(text);
+
+    }
+
 
     // do_crypt(encode_file, decode_file, 1); // 0 - decrypt расшифровывать, 1 - encrypt шифровать
 
@@ -135,6 +229,12 @@ private slots:
     void on_up_clicked();
 
     void on_down_clicked();
+
+    void on_Cancel_clicked();
+
+    void on_filter_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

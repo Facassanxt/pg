@@ -12,6 +12,7 @@
 #include <QtCore/QLocale>
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
@@ -23,7 +24,6 @@
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QTableView>
-#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -99,6 +99,8 @@ public:
     QSpacerItem *horizontalSpacer_5;
     QRadioButton *Admin_3;
     QRadioButton *Worker_3;
+    QHBoxLayout *horizontalLayout_7;
+    QPushButton *Cancel;
     QPushButton *Edit;
     QPushButton *pushButtonBD;
     QGroupBox *groupBoxButton;
@@ -106,13 +108,30 @@ public:
     QPushButton *pushButton_2;
     QPushButton *pushButton_3;
     QPushButton *pushButton_4;
+    QPushButton *filter;
     QGroupBox *groupBoxCom;
     QVBoxLayout *verticalLayout_13;
     QLineEdit *lineEdit;
     QPushButton *pushButtonCom;
     QPushButton *up;
     QPushButton *down;
-    QTextEdit *textEdit;
+    QGroupBox *Filter;
+    QFormLayout *formLayout;
+    QVBoxLayout *verticalLayout_8;
+    QLabel *label_17;
+    QLabel *label_18;
+    QLabel *label_19;
+    QLabel *label_20;
+    QLabel *label_22;
+    QLabel *label_21;
+    QVBoxLayout *verticalLayout_9;
+    QLineEdit *id_4;
+    QLineEdit *Name_4;
+    QLineEdit *Year_4;
+    QLineEdit *Address_4;
+    QLineEdit *Tel_4;
+    QLineEdit *login_4;
+    QPushButton *pushButton;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -399,7 +418,7 @@ public:
         groupBoxEd = new QGroupBox(centralWidget);
         groupBoxEd->setObjectName(QString::fromUtf8("groupBoxEd"));
         groupBoxEd->setEnabled(true);
-        groupBoxEd->setGeometry(QRect(0, 330, 501, 271));
+        groupBoxEd->setGeometry(QRect(0, 327, 501, 281));
         groupBoxEd->setStyleSheet(QString::fromUtf8("font: 8pt \"MS Shell Dlg 2\";"));
         verticalLayout_10 = new QVBoxLayout(groupBoxEd);
         verticalLayout_10->setSpacing(6);
@@ -635,11 +654,22 @@ public:
 
         verticalLayout_10->addLayout(horizontalLayout_19);
 
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setSpacing(6);
+        horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
+        Cancel = new QPushButton(groupBoxEd);
+        Cancel->setObjectName(QString::fromUtf8("Cancel"));
+
+        horizontalLayout_7->addWidget(Cancel);
+
         Edit = new QPushButton(groupBoxEd);
         Edit->setObjectName(QString::fromUtf8("Edit"));
         Edit->setFont(font1);
 
-        verticalLayout_10->addWidget(Edit);
+        horizontalLayout_7->addWidget(Edit);
+
+
+        verticalLayout_10->addLayout(horizontalLayout_7);
 
         pushButtonBD = new QPushButton(centralWidget);
         pushButtonBD->setObjectName(QString::fromUtf8("pushButtonBD"));
@@ -680,6 +710,11 @@ public:
 
         verticalLayout_12->addWidget(pushButton_4);
 
+        filter = new QPushButton(groupBoxButton);
+        filter->setObjectName(QString::fromUtf8("filter"));
+
+        verticalLayout_12->addWidget(filter);
+
         groupBoxCom = new QGroupBox(centralWidget);
         groupBoxCom->setObjectName(QString::fromUtf8("groupBoxCom"));
         groupBoxCom->setGeometry(QRect(0, 330, 361, 271));
@@ -704,25 +739,192 @@ public:
         down = new QPushButton(centralWidget);
         down->setObjectName(QString::fromUtf8("down"));
         down->setGeometry(QRect(710, 40, 75, 23));
-        textEdit = new QTextEdit(centralWidget);
-        textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        textEdit->setGeometry(QRect(130, 10, 551, 161));
-        textEdit->setStyleSheet(QString::fromUtf8("<meta charset=\"UTF-8\">"));
-        textEdit->setTabChangesFocus(false);
-        textEdit->setReadOnly(false);
-        textEdit->setOverwriteMode(false);
+        Filter = new QGroupBox(centralWidget);
+        Filter->setObjectName(QString::fromUtf8("Filter"));
+        Filter->setGeometry(QRect(0, 370, 361, 231));
+        formLayout = new QFormLayout(Filter);
+        formLayout->setSpacing(6);
+        formLayout->setContentsMargins(11, 11, 11, 11);
+        formLayout->setObjectName(QString::fromUtf8("formLayout"));
+        verticalLayout_8 = new QVBoxLayout();
+        verticalLayout_8->setSpacing(6);
+        verticalLayout_8->setObjectName(QString::fromUtf8("verticalLayout_8"));
+        label_17 = new QLabel(Filter);
+        label_17->setObjectName(QString::fromUtf8("label_17"));
+        label_17->setFont(font1);
+        label_17->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_8->addWidget(label_17);
+
+        label_18 = new QLabel(Filter);
+        label_18->setObjectName(QString::fromUtf8("label_18"));
+        label_18->setFont(font1);
+        label_18->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_8->addWidget(label_18);
+
+        label_19 = new QLabel(Filter);
+        label_19->setObjectName(QString::fromUtf8("label_19"));
+        label_19->setFont(font1);
+        label_19->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_8->addWidget(label_19);
+
+        label_20 = new QLabel(Filter);
+        label_20->setObjectName(QString::fromUtf8("label_20"));
+        label_20->setFont(font1);
+        label_20->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_8->addWidget(label_20);
+
+        label_22 = new QLabel(Filter);
+        label_22->setObjectName(QString::fromUtf8("label_22"));
+        label_22->setFont(font1);
+        label_22->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_8->addWidget(label_22);
+
+        label_21 = new QLabel(Filter);
+        label_21->setObjectName(QString::fromUtf8("label_21"));
+        label_21->setFont(font1);
+        label_21->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_8->addWidget(label_21);
+
+
+        formLayout->setLayout(0, QFormLayout::LabelRole, verticalLayout_8);
+
+        verticalLayout_9 = new QVBoxLayout();
+        verticalLayout_9->setSpacing(6);
+        verticalLayout_9->setObjectName(QString::fromUtf8("verticalLayout_9"));
+        id_4 = new QLineEdit(Filter);
+        id_4->setObjectName(QString::fromUtf8("id_4"));
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(id_4->sizePolicy().hasHeightForWidth());
+        id_4->setSizePolicy(sizePolicy);
+        id_4->setMinimumSize(QSize(100, 0));
+        id_4->setMaximumSize(QSize(400, 99999));
+        id_4->setFont(font1);
+        id_4->setContextMenuPolicy(Qt::DefaultContextMenu);
+        id_4->setLocale(QLocale(QLocale::Russian, QLocale::Russia));
+        id_4->setMaxLength(50);
+        id_4->setEchoMode(QLineEdit::Normal);
+        id_4->setAlignment(Qt::AlignCenter);
+        id_4->setDragEnabled(false);
+
+        verticalLayout_9->addWidget(id_4);
+
+        Name_4 = new QLineEdit(Filter);
+        Name_4->setObjectName(QString::fromUtf8("Name_4"));
+        Name_4->setEnabled(true);
+        sizePolicy.setHeightForWidth(Name_4->sizePolicy().hasHeightForWidth());
+        Name_4->setSizePolicy(sizePolicy);
+        Name_4->setMinimumSize(QSize(100, 0));
+        Name_4->setMaximumSize(QSize(400, 99999));
+        Name_4->setFont(font1);
+        Name_4->setCursor(QCursor(Qt::IBeamCursor));
+        Name_4->setTabletTracking(false);
+        Name_4->setContextMenuPolicy(Qt::DefaultContextMenu);
+        Name_4->setLocale(QLocale(QLocale::Russian, QLocale::Russia));
+        Name_4->setMaxLength(50);
+        Name_4->setEchoMode(QLineEdit::Normal);
+        Name_4->setAlignment(Qt::AlignCenter);
+        Name_4->setDragEnabled(false);
+
+        verticalLayout_9->addWidget(Name_4);
+
+        Year_4 = new QLineEdit(Filter);
+        Year_4->setObjectName(QString::fromUtf8("Year_4"));
+        Year_4->setMinimumSize(QSize(100, 0));
+        Year_4->setMaximumSize(QSize(400, 99999));
+        Year_4->setFont(font1);
+        Year_4->setContextMenuPolicy(Qt::DefaultContextMenu);
+        Year_4->setLocale(QLocale(QLocale::Russian, QLocale::Russia));
+        Year_4->setMaxLength(50);
+        Year_4->setEchoMode(QLineEdit::Normal);
+        Year_4->setAlignment(Qt::AlignCenter);
+        Year_4->setDragEnabled(false);
+
+        verticalLayout_9->addWidget(Year_4);
+
+        Address_4 = new QLineEdit(Filter);
+        Address_4->setObjectName(QString::fromUtf8("Address_4"));
+        Address_4->setMinimumSize(QSize(100, 0));
+        Address_4->setMaximumSize(QSize(400, 99999));
+        Address_4->setFont(font1);
+        Address_4->setContextMenuPolicy(Qt::DefaultContextMenu);
+        Address_4->setLocale(QLocale(QLocale::Russian, QLocale::Russia));
+        Address_4->setMaxLength(50);
+        Address_4->setEchoMode(QLineEdit::Normal);
+        Address_4->setAlignment(Qt::AlignCenter);
+        Address_4->setDragEnabled(false);
+
+        verticalLayout_9->addWidget(Address_4);
+
+        Tel_4 = new QLineEdit(Filter);
+        Tel_4->setObjectName(QString::fromUtf8("Tel_4"));
+        Tel_4->setMinimumSize(QSize(100, 0));
+        Tel_4->setMaximumSize(QSize(400, 99999));
+        Tel_4->setFont(font1);
+        Tel_4->setContextMenuPolicy(Qt::DefaultContextMenu);
+        Tel_4->setLocale(QLocale(QLocale::Russian, QLocale::Russia));
+        Tel_4->setMaxLength(50);
+        Tel_4->setEchoMode(QLineEdit::Normal);
+        Tel_4->setAlignment(Qt::AlignCenter);
+        Tel_4->setDragEnabled(false);
+
+        verticalLayout_9->addWidget(Tel_4);
+
+        login_4 = new QLineEdit(Filter);
+        login_4->setObjectName(QString::fromUtf8("login_4"));
+        login_4->setMinimumSize(QSize(100, 0));
+        login_4->setMaximumSize(QSize(400, 99999));
+        login_4->setFont(font1);
+        login_4->setContextMenuPolicy(Qt::DefaultContextMenu);
+        login_4->setLocale(QLocale(QLocale::Russian, QLocale::Russia));
+        login_4->setMaxLength(50);
+        login_4->setEchoMode(QLineEdit::Normal);
+        login_4->setAlignment(Qt::AlignCenter);
+        login_4->setDragEnabled(false);
+
+        verticalLayout_9->addWidget(login_4);
+
+
+        formLayout->setLayout(0, QFormLayout::FieldRole, verticalLayout_9);
+
+        pushButton = new QPushButton(Filter);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+
+        formLayout->setWidget(1, QFormLayout::FieldRole, pushButton);
+
         MainWindow->setCentralWidget(centralWidget);
+        tableView->raise();
         groupBoxCom->raise();
         groupBoxAdd->raise();
-        groupBoxEd->raise();
         pushButtonBD->raise();
-        tableView->raise();
         groupBox->raise();
-        groupBoxLog->raise();
-        groupBoxButton->raise();
         up->raise();
         down->raise();
-        textEdit->raise();
+        Cancel->raise();
+        groupBoxEd->raise();
+        Edit->raise();
+        groupBoxLog->raise();
+        groupBoxButton->raise();
+        label_17->raise();
+        id_4->raise();
+        Name_4->raise();
+        label_18->raise();
+        label_19->raise();
+        Year_4->raise();
+        label_20->raise();
+        Address_4->raise();
+        label_21->raise();
+        login_4->raise();
+        label_22->raise();
+        Tel_4->raise();
+        Filter->raise();
 
         retranslateUi(MainWindow);
 
@@ -774,14 +976,32 @@ public:
         password->setText(QString());
         Admin_3->setText(QApplication::translate("MainWindow", "Admin", nullptr));
         Worker_3->setText(QApplication::translate("MainWindow", "Worker", nullptr));
+        Cancel->setText(QApplication::translate("MainWindow", "Cancel", nullptr));
         Edit->setText(QApplication::translate("MainWindow", "Edit", nullptr));
         pushButtonBD->setText(QApplication::translate("MainWindow", "\320\222\321\213\320\262\320\276\320\264 \320\221\320\224", nullptr));
         pushButton_2->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214", nullptr));
         pushButton_3->setText(QApplication::translate("MainWindow", "\320\230\320\267\320\274\320\265\320\275\320\270\321\202\321\214", nullptr));
         pushButton_4->setText(QApplication::translate("MainWindow", "\320\240\321\203\321\207\320\275\320\276\320\271 \320\262\320\262\320\276\320\264 \320\272\320\276\320\274\320\260\320\275\320\264", nullptr));
+        filter->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200", nullptr));
         pushButtonCom->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\277\321\200\320\260\320\262\320\270\321\202\321\214", nullptr));
         up->setText(QApplication::translate("MainWindow", "\342\206\221", nullptr));
         down->setText(QApplication::translate("MainWindow", "\342\206\223", nullptr));
+        label_17->setText(QApplication::translate("MainWindow", "Id", nullptr));
+        label_18->setText(QApplication::translate("MainWindow", "Name:", nullptr));
+        label_19->setText(QApplication::translate("MainWindow", "Year:", nullptr));
+        label_20->setText(QApplication::translate("MainWindow", "Address:", nullptr));
+        label_22->setText(QApplication::translate("MainWindow", "Tel:", nullptr));
+        label_21->setText(QApplication::translate("MainWindow", "Login", nullptr));
+        id_4->setText(QString());
+#ifndef QT_NO_STATUSTIP
+        Name_4->setStatusTip(QString());
+#endif // QT_NO_STATUSTIP
+        Name_4->setText(QString());
+        Year_4->setText(QString());
+        Address_4->setText(QString());
+        Tel_4->setText(QString());
+        login_4->setText(QString());
+        pushButton->setText(QApplication::translate("MainWindow", "\320\222\321\213\320\277\320\276\320\273\320\275\320\270\321\202\321\214", nullptr));
     } // retranslateUi
 
 };

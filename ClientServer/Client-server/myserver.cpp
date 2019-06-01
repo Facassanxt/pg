@@ -38,14 +38,79 @@ void myserver::readyRead()
     QString Message;
 
 
-    Message = socket->readAll();
-    qDebug()<<"Data: "<<Message;
+    QByteArray Messageg = socket->readAll();
+
+    qDebug()<<"Зашифрованное: "<<Messageg;
+    QString text;
+
+    QByteArray buffer;
+        buffer.append(Messageg);
+
+    unsigned char  cStrData[256];
+    memcpy(cStrData, buffer.data(), buffer.size());
+    string res = mesSSL(cStrData,  buffer.size());
+    QString test = QString::fromUtf8(res.c_str());
+    qDebug() << test;
+
+   string token;
+    istringstream streamSs(test.toStdString());
+    while(getline(streamSs, token, '#'))
+    {
+         Message = QString::fromUtf8(token.c_str());
+         qDebug() <<"Message " << Message;
+         break;
+    }
+
+
+//    FILE *encode_file = fopen("./2.txt", "wb");
+//    unsigned char *ert = reinterpret_cast<unsigned char *>(array.data());
+//    fwrite(ert , 1 , sizeof(array) , encode_file ); // записать в файл содержимое буфера
+//    fclose(encode_file);
+
+//    QFile file("./2");
+//    file.open(QIODevice::WriteOnly);
+//    file.write(Messageg);
+//    file.close();
+
+//    QFile File("./2");
+//    if (File.open(QIODevice::ReadOnly|QFile::Text))
+//    {
+//        text = File.readAll();
+//        qDebug()<<"Зашифрованное: "<< text;
+//        qDebug()<<"Зашифрованное: "<< text.toUtf8();
+//        qDebug()<<"Зашифрованное: "<< text.toLocal8Bit();
+//        QByteArray Text = text.toUtf8();
+//        qDebug()<<"Зашифрованное: "<< Text;
+//    }
+//    File.close();
+
+//    decrypt(); // Расшифровывать
+
+//    QFile file3("./3");
+//    if (file3.open(QIODevice::ReadOnly|QFile::Text))
+//    {
+//        text = file3.readAll();
+//        qDebug()<<"Расшифрованное фаил: "<< text;
+//        qDebug()<<"Расшифрованное фаил: "<< text.toUtf8();
+//        qDebug()<<"Расшифрованное фаил: "<< text.toLocal8Bit();
+//        qDebug()<<"Расшифрованное фаил: "<< text.toUtf8().data();
+//    }
+//    file3.close();
+
+
+
+//    QByteArray buffer;
+//    buffer.append(Message);
+   // unsigned char  cStrData[256];
+    //memcpy(cStrData, buffer.data(), buffer.size());
+    //Message = QString::fromUtf8(mesSSL(cStrData,  buffer.size()).c_str());
+   // Message = Message.toUtf8();
+   // qDebug()<<"Расшифрованное: "<<Message;
 
     QSqlQuery query;
     QString Name, Year, Address, Tel, Login, Password, access, id;
 
     int k = 0;
-    string token;
     istringstream streamS(Message.toStdString());
     while(getline(streamS, token, ':')) k++;
     qDebug() << k;
@@ -57,22 +122,24 @@ void myserver::readyRead()
     {
         QByteArray answerBd = "";
         answerBd = sendDB().toUtf8().data();
-        QFile file("./1.txt");
-        file.open(QIODevice::WriteOnly|QFile::Text);
-        file.write(answerBd);
-        file.close();
-        encrypt(); // Шифровать для отправки
-        //decrypt(); // Расшифровывать
 
-        file.setFileName("./2.txt");
-        if (file.open(QIODevice::ReadOnly|QFile::Text))
-        {
-            QByteArray fromFile = file.readAll();
-            qDebug() << fromFile;
+        socket->write(answerBd);
+//        QFile file("./1.txt");
+//        file.open(QIODevice::WriteOnly|QFile::Text);
+//        file.write(answerBd);
+//        file.close();
+//        encrypt(); // Шифровать для отправки
+//        decrypt(); // Расшифровывать
 
-            socket->write(fromFile);
-        }
-        file.close();
+//        file.setFileName("./2.txt");
+//        if (file.open(QIODevice::ReadOnly|QFile::Text))
+//        {
+//            QByteArray fromFile = file.readAll();
+//            qDebug() << fromFile;
+
+//            socket->write(fromFile);
+//        }
+//        file.close();
 
 
 
@@ -80,7 +147,11 @@ void myserver::readyRead()
 
     }else if(k == 1)
     {
-        if ((SWorAuth[Id] == SClients[Id]) || (SAdminAuth[Id] == SClients[Id])) qDebug() << query.exec(Message);
+        if ((SWorAuth[Id] == SClients[Id]) || (SAdminAuth[Id] == SClients[Id]))
+        {
+            if(query.exec(Message)) socket->write("true");
+            else socket->write("false");
+        }
     }
     if(k == 2)
     {

@@ -35,6 +35,7 @@
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
+#include <QTextCodec>
 
 
 
@@ -159,19 +160,42 @@ public:
     }
     void encrypt()
     {
-        FILE *encode_file = fopen("./1.txt", "rb");
-        FILE *decode_file = fopen("./2.txt", "wb");
+        FILE *encode_file = fopen("./1", "rb");
+        FILE *decode_file = fopen("./2", "wb");
         do_crypt(encode_file, decode_file, 1); // 0 - decrypt, 1 - encrypt
         fclose(encode_file);
         fclose(decode_file);
 
     }
     void decrypt(){
-        FILE *encode_file = fopen("./2.txt", "rb");
-        FILE *decode_file = fopen("./1.txt", "wb");
+        FILE *encode_file = fopen("./2", "rb");
+        FILE *decode_file = fopen("./3", "wb");
         do_crypt(encode_file, decode_file, 0); // 0 - decrypt, 1 - encrypt
         fclose(encode_file);
         fclose(decode_file);
+    }
+    string mesSSL(unsigned char *res, int crlen) //decryption
+    {
+
+        unsigned char *key = (unsigned char *) "0123456789abcdeF0123456789abcdeF";
+        unsigned char *iv = (unsigned char *) "1234567887654321";
+
+        unsigned char decrypt[256];
+
+        EVP_CIPHER_CTX *ctx;
+
+        ctx = EVP_CIPHER_CTX_new();
+        EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv);
+        int len = 0;
+
+        EVP_DecryptUpdate(ctx, decrypt, &len, res, crlen);
+        EVP_DecryptFinal_ex(ctx, decrypt + len, &len);
+
+        string str = (char*)decrypt;
+        int j = str.find("~");
+        string decFinal  = str.substr(0, j);
+        QString stri = QString::fromUtf8(decFinal.c_str());
+        return  decFinal;
     }
 
     // do_crypt(encode_file, decode_file, 1); // 0 - decrypt расшифровывать, 1 - encrypt шифровать
